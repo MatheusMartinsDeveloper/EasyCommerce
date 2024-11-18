@@ -11,3 +11,12 @@ export async function createProduct(dataProduct) {
         throw Error(`Error in createProduct: ${error}`);        
     }
 }
+
+export async function getAllProducts() {
+    try {
+        const getProducts = await prisma.products.findMany();
+        return getProducts;
+    } catch (error) {
+        throw Error(`Error in getAllProducts ${error}`);
+    }
+}

@@ -5,5 +5,6 @@ import productsController from "../../controllers/Products/productsController.js
 const productsRoutes = express.Router();
 
 productsRoutes.post("/createProduct", authenticate, productsController.create);
+productsRoutes.get("/getAllProducts", productsController.get);
 
 export default productsRoutes;
