@@ -17,7 +17,7 @@ export async function createAdmin(adminData) {
 
         return admin;
     } catch (error) {
-        console.error(`Error to try create new admin: ${error}`);
+        throw Error(`Error to try create new admin: ${error}`);
     }   
 }
 
