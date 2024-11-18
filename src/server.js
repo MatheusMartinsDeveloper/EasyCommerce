@@ -1,18 +1,23 @@
-import express from "express"
-import { PrismaClient } from "@prisma/client";
+import app from "./app.js";
+import prisma from "./services/Prisma/prismaService.js";
 
 const PORT = 3000;
-const app = express();
-const prisma = new PrismaClient();
 
 async function main() {
+    try {
+        await prisma.$connect();
+        console.log("Success to connect in database");
+    } catch (error) {
+        console.error(`Error to connect in database: ${error}`);
+        process.exit(1);
+    }
+
     app.listen(PORT, () => {
-        console.log(`Server Running in PORT:`, PORT);
+        console.log(`Server running in PORT: ${PORT}`);
     });
 }
 
-main()
-    .catch((error) => {
-        console.error(`Prisma Error:`, error);
-        process.exit(1);
-    })
+main().catch((error) => {
+    console.error(`Error in init server: ${error}`);
+    process.exit(1);
+});
