@@ -1,4 +1,4 @@
-import createAdmin from "../../services/Admin/adminService.js";
+import { createAdmin, loginAdmin } from "../../services/Admin/adminService.js";
 
 async function create(request, response) {
     const adminData = request.body;
@@ -12,4 +12,16 @@ async function create(request, response) {
     }
 }
 
-export default { create }
+async function login(request, response) {
+    const { email, password } = request.body;
+
+    try {
+        const token = await loginAdmin({ email, password });
+
+        response.status(201).json({ message: "Login Success!", token: token });
+    } catch (error) {
+        response.status(401).json({ message: "Login is failed!", error: error.message });
+    }
+}
+
+export default { create, login }
