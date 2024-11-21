@@ -15,12 +15,63 @@ model Admins {
 }
 
 model Products {
-  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  id                String      @id @default(auto()) @map("_id") @db.ObjectId
   name              String
   description       String
   price             Float
   quantity          Int
   category          String
-  addStock          DateTime @default(now())
-  lastActualization DateTime @updatedAt
+  addStock          DateTime    @default(now())
+  lastActualization DateTime    @updatedAt
+  OrderItem         OrderItem[]
+}
+
+model Customers {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  telephone   String    @unique
+  dataOfBirth String
+  cpf         String    @unique
+  email       String    @unique
+  password    String    @unique
+  status      String    @default("active")
+  address     Address[]
+  orders      Orders[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Address {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  country      String
+  state        String
+  city         String
+  neighborhood String
+  street       String
+  number       Int
+  zipCode      String
+  complement   String?
+  customerId   String    @db.ObjectId
+  customer     Customers @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  Orders       Orders[]
+}
+
+model Orders {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  orderDate  DateTime    @default(now())
+  status     String      @default("peding")
+  customerId String      @db.ObjectId
+  customer   Customers   @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  addressId  String      @db.ObjectId
+  address    Address     @relation(fields: [addressId], references: [id])
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId   String   @db.ObjectId
+  order     Orders   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String   @db.ObjectId
+  product   Products @relation(fields: [productId], references: [id])
+  quantity  Int
 }
