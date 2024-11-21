@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export default function authenticate(request, response, next) {
+export default function authorization(request, response, next) {
     const token = request.headers["authorization"]?.split(" ")[1];
 
     if (!token) {
